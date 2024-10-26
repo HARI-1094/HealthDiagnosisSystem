@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidney Disease Prediction</title>
+    <style>
+        body {
+            text-align: center;
+            background-image: url('https://cdn.shopify.com/s/files/1/0639/3803/5948/files/AdobeStock_283773852_1024x1024.jpg?v=1669792838');
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        form {
+            display: block;
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        table {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        table td {
+            padding: 10px;
+        }
+        label {
+            display: inline-block;
+            font-size: 16px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            display: inline-block;
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #FF5733;
+        }
+        .positive {
+            color: red;
+        }
+        .negative {
+            color: green;
+        }
+        .back-button {
+            width: 100px;
+            padding: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".back-button").addEventListener("click", function() {
+                window.location.href = '/';
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Kidney Disease Prediction</h2>
+
+    <form action="/kidney" method="POST">
+        <table>
+            <tr>
+                <td><label for="age">Age:</label></td>
+                <td><input type="text" id="age" name="age"></td>
+                <td><label for="bp">Blood Pressure:</label></td>
+                <td><input type="text" id="bp" name="bp"></td>
+            </tr>
+            <tr>
+                <td><label for="al">Albumin:</label></td>
+                <td><input type="text" id="al" name="al"></td>
+                <td><label for="su">Sugar:</label></td>
+                <td><input type="text" id="su" name="su"></td>
+            </tr>
+            <tr>
+                <td><label for="rbc">Red Blood Cells:</label></td>
+                <td><input type="text" id="rbc" name="rbc"></td>
+                <td><label for="pc">Pus Cell:</label></td>
+                <td><input type="text" id="pc" name="pc"></td>
+            </tr>
+            <tr>
+                <td><label for="pcc">Pus Cell Clumps:</label></td>
+                <td><input type="text" id="pcc" name="pcc"></td>
+                <td><label for="ba">Bacteria:</label></td>
+                <td><input type="text" id="ba" name="ba"></td>
+            </tr>
+            <tr>
+                <td><label for="bgr">Blood Glucose Random:</label></td>
+                <td><input type="text" id="bgr" name="bgr"></td>
+                <td><label for="bu">Blood Urea:</label></td>
+                <td><input type="text" id="bu" name="bu"></td>
+            </tr>
+            <tr>
+                <td><label for="sc">Serum Creatinine:</label></td>
+                <td><input type="text" id="sc" name="sc"></td>
+                <td><label for="pot">Potassium:</label></td>
+                <td><input type="text" id="pot" name="pot"></td>
+            </tr>
+            <tr>
+                <td><label for="wc">White Blood Cell Count:</label></td>
+                <td><input type="text" id="wc" name="wc"></td>
+                <td><label for="htn">Hypertension:</label></td>
+                <td><input type="text" id="htn" name="htn"></td>
+            </tr>
+            <tr>
+                <td><label for="dm">Diabetes Mellitus:</label></td>
+                <td><input type="text" id="dm" name="dm"></td>
+                <td><label for="cad">Coronary Artery Disease:</label></td>
+                <td><input type="text" id="cad" name="cad"></td>
+            </tr>
+            <tr>
+                <td><label for="pe">Pedal Edema:</label></td>
+                <td><input type="text" id="pe" name="pe"></td>
+                <td><label for="ane">Anemia:</label></td>
+                <td><input type="text" id="ane" name="ane"></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button type="submit" name="submit">Predict</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <!-- Display the kidney disease diagnosis if available -->
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% elif kidney_diagnosis %}
+    <p class="result {% if kidney_diagnosis == 'The person has kidney disease' %}positive{% else %}negative{% endif %}">{{ kidney_diagnosis }}</p>
+    {% endif %}
+
+    <div style="text-align: center;">
+        <button class="back-button" onclick="window.location.href='/';">Back</button>
+    </div>
+</body>
+</html>
